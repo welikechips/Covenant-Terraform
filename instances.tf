@@ -101,7 +101,8 @@ resource "null_resource" "http_redirector_provisioning" {
                 "sudo service apache2 stop",
                 "sudo service apache2 start",
                 "sudo openssl pkcs12 -export -out /home/ubuntu/certificate.pfx -inkey /etc/letsencrypt/live/www.${var.server_name}/privkey.pem -in /etc/letsencrypt/live/www.${var.server_name}/cert.pem -certfile /etc/letsencrypt/live/www.${var.server_name}/chain.pem -password pass:${var.certificate_export_password}",
-                "sudo chmod 666 /home/ubuntu/certificate.pfx"
+                "sudo chown ubuntu:ubuntu /home/ubuntu/certficate.pfx",
+                "sudo chmod 600 /home/ubuntu/certficate.pfx"
         ]
     }
     provisioner "local-exec" {
