@@ -1,5 +1,11 @@
 ### Commands
 
+Need to setup aws creds:
+```
+export AWS_ACCESS_KEY_ID=<ACCESS_KEY>
+export AWS_SECRET_ACCESS_KEY=<AWS_SECRET>
+```
+
 ```
 terraform init
 terraform validate
