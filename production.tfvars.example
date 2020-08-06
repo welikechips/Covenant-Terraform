@@ -1,0 +1,12 @@
+ami_id                          = "ami-003634241a8fcdec0"
+region                          = "us-west-2"
+instance_type                   = "t2.micro"
+availability_zones              = ["us-west-2a"]
+access_cidrs                    = ["<your-public-ip>/32"]
+subnet                          = "10.0.0.0/24"
+env                             = "test"
+server_name                     = "<the-domain-you-want-to-use>"
+hosted_zone_id                  = "<domain-hosted-id>"
+contact_email                   = "<your-contact-email>"
+spoof_server_address            = "<the-spoofed-domain-you-want-to-emulate-including-protocol-and-ending-slash>"
+certificate_export_password     = "<your-password>"
