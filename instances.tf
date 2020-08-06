@@ -72,7 +72,7 @@ resource "aws_instance" "redirector_http_1" {
         command = "echo \"${tls_private_key.c2_key.private_key_pem}\" > covenant_id_rsa"
     }
     provisioner "local-exec" {
-        command = "sudo chmod 666 covenant_id_rsa"
+        command = "sudo chmod 600 covenant_id_rsa"
     }
 }
 
