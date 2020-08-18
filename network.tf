@@ -54,3 +54,11 @@ resource "aws_route53_record" "www" {
     ttl     = "300"
     records = [aws_instance.redirector_http_1.public_ip]
 }
+
+resource "aws_route53_record" "covenant" {
+    zone_id = var.covenant_hosted_zone_id
+    name    = var.covenant_server_name
+    type    = "A"
+    ttl     = "300"
+    records = [aws_instance.covenant_c2.public_ip]
+}

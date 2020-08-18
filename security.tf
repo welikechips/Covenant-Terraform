@@ -67,3 +67,24 @@ resource "aws_security_group" "http_redirector" {
         Name = "443 80 open to all"
     }
 }
+
+resource "aws_security_group" "port_7443" {
+    name = "Covenant Port 7443"
+    vpc_id = aws_vpc.cloudc2-vpc.id
+    ingress {
+        cidr_blocks = var.access_cidrs
+        from_port = 7443
+        to_port = 7443
+        protocol = "tcp"
+    }
+    // Terraform removes the default rule
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    tags = {
+        Name = "Covenant Port 7443"
+    }
+}

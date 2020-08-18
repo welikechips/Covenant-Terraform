@@ -36,6 +36,11 @@ variable "server_name" {
     description = "The ssl cert server name"
 }
 
+variable "covenant_server_name" {
+    type = string
+    description = "The server name for the covenant server"
+}
+
 variable "spoof_server_address" {
     type = string
     description = "The url address that you are mimicking"  
@@ -43,7 +48,12 @@ variable "spoof_server_address" {
 
 variable "hosted_zone_id" {
     type = string
-    description = "The hosted zone id"
+    description = "The hosted zone id for the redirector server"
+}
+
+variable "covenant_hosted_zone_id" {
+    type = string
+    description = "The hosted zone id for the covenant server"
 }
 
 variable "contact_email" {
