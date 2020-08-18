@@ -6,7 +6,6 @@ resource "aws_instance" "covenant_c2" {
     vpc_security_group_ids  = [
         aws_security_group.port_22_all.id,
         aws_default_security_group.default.id,
-        aws_security_group.http_redirector.id,
         aws_security_group.port_7443.id
     ]
 
