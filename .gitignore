@@ -3,3 +3,4 @@ certificate.pfx
 production.tfvars
 .terraform/
 terraform.tfstate*
+test.txt
