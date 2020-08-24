@@ -1,0 +1,5 @@
+covenant_id_rsa
+certificate.pfx
+production.tfvars
+.terraform/
+terraform.tfstate*
