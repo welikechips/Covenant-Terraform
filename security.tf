@@ -39,20 +39,16 @@ resource "aws_default_security_group" "default" {
 }
 
 resource "aws_security_group" "http_redirector" {
-    name = "443 80 open to all"
+    name = "443 80 open only to allow access"
     vpc_id = aws_vpc.cloudc2-vpc.id
     ingress {
-        cidr_blocks = [
-            "0.0.0.0/0"
-        ]
+        cidr_blocks = var.only_allow_access_to_cidrs
         from_port = 443
         to_port = 443
         protocol = "tcp"
     }
     ingress {
-        cidr_blocks = [
-            "0.0.0.0/0"
-        ]
+        cidr_blocks = var.only_allow_access_to_cidrs
         from_port = 80
         to_port = 80
         protocol = "tcp"
@@ -64,7 +60,7 @@ resource "aws_security_group" "http_redirector" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     tags = {
-        Name = "443 80 open to all"
+        Name = "443 80 open only to allow access"
     }
 }
 

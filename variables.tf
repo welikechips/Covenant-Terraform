@@ -22,6 +22,11 @@ variable "access_cidrs" {
     description = "The ip address cidrs you are using to access c2 infrastructure."
 }
 
+variable "only_allow_access_to_cidrs" {
+    type = list
+    description = "The ip address cidrs you are using to access redirectors endpoints."
+}
+
 variable "subnet" {
     type = string
     description = "The local subnet for the instances"
