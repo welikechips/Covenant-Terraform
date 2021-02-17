@@ -73,7 +73,7 @@ resource "aws_route53_record" "mail" {
 
 resource "aws_route53_record" "phishing_application" {
     zone_id = var.email_server_hosted_zone_id
-    name    = "${var.email_server_name}"
+    name    = var.email_server_name
     type    = "A"
     ttl     = "300"
     records = [aws_instance.phishing_application_server.public_ip]
