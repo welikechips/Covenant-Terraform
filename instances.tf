@@ -66,10 +66,7 @@ resource "aws_instance" "phishing_application_server" {
             "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
             "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
             "sudo git clone https://${var.ford_github_user_name}:${var.ford_github_password}@github.ford.com/FordRedTeam/PhishingSite /home/ubuntu/myproject",
-            "sudo bash /home/ubuntu/myproject/install.sh ${var.ford_github_user_name} ${var.ford_github_password} ${var.django_user_name} ${var.django_email} ${var.email_server_name}",
-            "sudo echo \"ALLOWED_HOSTS +=['${aws_instance.phishing_application_server.private_ip}']\" >> /home/ubuntu/myproject/myproject/settings.py",
-            "sudo echo \"CORS_ALLOWED_ORIGINS +=['https://${var.server_name}/assets/login']\" >> /home/ubuntu/myproject/myproject/settings.py",
-            "sudo echo \"CSRF_TRUSTED_ORIGINS +=['${var.server_name}']\" >> /home/ubuntu/myproject/myproject/settings.py",
+            "sudo bash /home/ubuntu/myproject/install.sh ${var.ford_github_user_name} ${var.ford_github_password} ${var.django_user_name} ${var.django_email} ${var.email_server_name} ${var.server_name} ${aws_instance.phishing_application_server.private_ip}",
             "sudo service apache2 restart"
         ]
     }
