@@ -169,7 +169,7 @@ resource "null_resource" "http_redirector_provisioning" {
                 "sleep 60",
                 "sudo certbot certonly -d \"www.${var.server_name},${var.server_name}\" --apache -n --agree-tos -m \"${var.contact_email}\"",
                 "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/replace_000_default.sh | sudo bash -s -- ${aws_instance.redirector_http_1.public_ip} ${var.server_name}",
-                "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/replace_default_le_ssl.sh | sudo bash -s -- ${aws_instance.covenant_c2.private_ip} ${var.server_name} ${var.spoof_server_address} ${aws_instance.phishing_server.private_ip}",
+                "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/replace_default_le_ssl.sh | sudo bash -s -- ${aws_instance.covenant_c2.private_ip} ${var.server_name} ${var.spoof_server_address} ${aws_instance.phishing_application_server.private_ip}",
                 "sudo a2enmod ssl rewrite proxy proxy_http",
                 "sudo a2ensite default-ssl.conf",
                 "sudo a2enmod proxy_connect",
