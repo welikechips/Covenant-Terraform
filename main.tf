@@ -16,3 +16,8 @@ resource "aws_eip" "ip" {
     instance = aws_instance.covenant_c2.id
     vpc      = true
 }
+
+resource "aws_eip" "mail_ip" {
+    instance = aws_instance.phishing_mailing_server.id
+    vpc      = true
+}
