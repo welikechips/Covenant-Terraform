@@ -62,3 +62,11 @@ resource "aws_route53_record" "covenant" {
     ttl     = "300"
     records = [aws_instance.covenant_c2.public_ip]
 }
+
+resource "aws_route53_record" "mail" {
+    zone_id = var.email_server_hosted_zone_id
+    name    = "mail.${var.email_server_name}"
+    type    = "A"
+    ttl     = "300"
+    records = [aws_instance.phishing_mailing_server.public_ip]
+}
