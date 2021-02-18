@@ -38,10 +38,10 @@ output "covenant_url" {
     value = "https://${var.covenant_server_name}:7443/covenantuser/login"
 }
 
-output "django_phishing_url" {
+output "http_phishing_application_url" {
     value = "https://${var.server_name}/admin/login/"
 }
 
-output "phishing_mailing_server_url" {
+output "http_phishing_mailing_server_url" {
     value = "https://mail.${var.email_server_name}/iredmail/"
 }
