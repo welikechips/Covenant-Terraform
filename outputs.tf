@@ -29,3 +29,19 @@ output "http_redirector_public_ip" {
 output "http_redirector_private_ip" {
     value = aws_instance.redirector_http_1.private_ip
 }
+
+output "http_redirector_url" {
+    value = "https://${var.server_name}/"
+}
+
+output "covenant_url" {
+    value = "https://${var.covenant_server_name}:7443/covenantuser/login"
+}
+
+output "django_phishing_url" {
+    value = "https://${var.server_name}/admin/login/"
+}
+
+output "phishing_mailing_server_url" {
+    value = "https://mail.${var.email_server_name}/iredmail/"
+}
