@@ -65,9 +65,6 @@ resource "aws_instance" "phishing_application_server" {
             "sudo apt-get autoremove -y",
             "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
             "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
-            "sudo git clone https://${var.ford_github_user_name}:${var.ford_github_password}@github.ford.com/FordRedTeam/PhishingSite /home/ubuntu/myproject",
-            "sudo bash /home/ubuntu/myproject/install.sh ${var.ford_github_user_name} ${var.ford_github_password} ${var.django_user_name} ${var.django_email} ${var.email_server_name} ${var.server_name} ${aws_instance.phishing_application_server.private_ip}",
-            "sudo service apache2 restart"
         ]
     }
 }
@@ -183,4 +180,25 @@ resource "null_resource" "http_redirector_provisioning" {
     provisioner "local-exec" {
         command = "scp -i covenant_id_rsa ubuntu@${aws_instance.redirector_http_1.public_ip}:/home/ubuntu/certificate.pfx ."
     }   
+}
+
+resource "null_resource" "phishing_application_server" {
+    count = "1"
+
+    connection {
+        user            = "ubuntu"
+        type            = "ssh"
+        timeout         = "2m"
+        host            = aws_instance.phishing_application_server.public_ip
+        private_key     = tls_private_key.c2_key.private_key_pem
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "export PATH=$PATH:/usr/bin",
+            "sudo git clone https://${var.ford_github_user_name}:${var.ford_github_password}@github.ford.com/FordRedTeam/PhishingSite /home/ubuntu/myproject",
+            "sudo bash /home/ubuntu/myproject/install.sh ${var.ford_github_user_name} ${var.ford_github_password} ${var.django_user_name} ${var.django_email} ${var.email_server_name} ${var.server_name} ${aws_instance.phishing_application_server.private_ip}",
+            "sudo service apache2 restart"
+        ]
+    }
 }
