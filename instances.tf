@@ -34,44 +34,9 @@ resource "aws_instance" "covenant_c2" {
     }
 }
 
-resource "aws_instance" "phishing_application_server" {
-    ami                     = var.ami_id
-    instance_type           = var.instance_type
-    key_name                = aws_key_pair.generated_key.key_name
-    subnet_id               = aws_subnet.subnet_1.id
-    vpc_security_group_ids  = [
-        aws_security_group.port_22_all.id,
-        aws_default_security_group.default.id,
-        aws_security_group.http_redirector.id
-    ]
-
-    tags = {
-        Name = "Phishing Application Server"
-    }
-
-    connection {
-        user            = "ubuntu"
-        type            = "ssh"
-        timeout         = "2m"
-        host            = self.public_ip
-        private_key     = tls_private_key.c2_key.private_key_pem
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "export PATH=$PATH:/usr/bin",
-            "sudo apt-get update",
-            "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
-            "sudo apt-get autoremove -y",
-            "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
-            "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
-        ]
-    }
-}
-
 resource "aws_instance" "phishing_mailing_server" {
     ami                     = var.ami_id
-    instance_type           = var.instance_type
+    instance_type           = "t2.xlarge"
     key_name                = aws_key_pair.generated_key.key_name
     subnet_id               = aws_subnet.subnet_1.id
     vpc_security_group_ids  = [
@@ -163,7 +128,7 @@ resource "null_resource" "http_redirector_provisioning" {
                 "sleep 60",
                 "sudo certbot certonly -d \"www.${var.server_name},${var.server_name}\" --apache -n --agree-tos -m \"${var.contact_email}\"",
                 "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/replace_000_default.sh | sudo bash -s -- ${aws_instance.redirector_http_1.public_ip} ${var.server_name}",
-                "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/replace_default_le_ssl.sh | sudo bash -s -- ${aws_instance.covenant_c2.private_ip} ${var.server_name} ${var.spoof_server_address} ${aws_instance.phishing_application_server.private_ip}",
+                "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/replace_default_le_ssl.sh | sudo bash -s -- ${aws_instance.covenant_c2.private_ip} ${var.server_name} ${var.spoof_server_address} ${var.phishing_application_server_domain_name}",
                 "sudo a2enmod ssl rewrite proxy proxy_http",
                 "sudo a2ensite default-ssl.conf",
                 "sudo a2enmod proxy_connect",
@@ -176,29 +141,8 @@ resource "null_resource" "http_redirector_provisioning" {
     }
     provisioner "local-exec" {
         command = "ssh-keyscan -H ${aws_instance.redirector_http_1.public_ip} >> ~/.ssh/known_hosts"
-    }   
+    }
     provisioner "local-exec" {
         command = "scp -i covenant_id_rsa ubuntu@${aws_instance.redirector_http_1.public_ip}:/home/ubuntu/certificate.pfx ."
-    }   
-}
-
-resource "null_resource" "phishing_application_server" {
-    count = "1"
-
-    connection {
-        user            = "ubuntu"
-        type            = "ssh"
-        timeout         = "2m"
-        host            = aws_instance.phishing_application_server.public_ip
-        private_key     = tls_private_key.c2_key.private_key_pem
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "export PATH=$PATH:/usr/bin",
-            "sudo git clone https://${var.ford_github_user_name}:${var.ford_github_password}@github.ford.com/FordRedTeam/PhishingSite /home/ubuntu/myproject",
-            "sudo bash /home/ubuntu/myproject/install.sh ${var.ford_github_user_name} ${var.ford_github_password} ${var.django_user_name} ${var.django_email} ${var.email_server_name} ${var.server_name} ${aws_instance.phishing_application_server.private_ip}",
-            "sudo service apache2 restart"
-        ]
     }
 }
