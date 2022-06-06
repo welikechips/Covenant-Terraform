@@ -71,24 +71,9 @@ variable "certificate_export_password" {
     description = "password to export the ssl generated certificate"
 }
 
-variable "ford_github_user_name" {
+variable "phishing_application_server_domain_name" {
     type = string
-    description = "username to pull ford github private repositories"
-}
-
-variable "ford_github_password" {
-    type = string
-    description = "password to pull ford github private repositories"
-}
-
-variable "django_user_name" {
-    type = string
-    description = "username for phishing backend"
-}
-
-variable "django_email" {
-    type = string
-    description = "email for phishing backend"
+    description = "Phishing application server domain name"
 }
 
 variable "email_server_name" {
