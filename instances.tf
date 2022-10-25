@@ -1,5 +1,14 @@
+resource "null_resource" "save_c2_cert" {
+    provisioner "local-exec" {
+        command = "echo \"${tls_private_key.c2_key.private_key_pem}\" > covenant_id_rsa"
+    }
+    provisioner "local-exec" {
+        command = "sudo chmod 600 covenant_id_rsa"
+    }
+}
+
 resource "aws_instance" "covenant_c2" {
-    ami                     = "ami-0a6335995610caf00" #kali
+    ami                     = "ami-0f71b9908e9042472" #kali
     instance_type           = var.instance_type
     key_name                = aws_key_pair.generated_key.key_name
     subnet_id               = aws_subnet.subnet_1.id
@@ -101,12 +110,6 @@ resource "aws_instance" "redirector_http_1" {
             "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
             "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-redirector-server.sh | sudo bash",
         ]
-    }
-    provisioner "local-exec" {
-        command = "echo \"${tls_private_key.c2_key.private_key_pem}\" > covenant_id_rsa"
-    }
-    provisioner "local-exec" {
-        command = "sudo chmod 600 covenant_id_rsa"
     }
 }
 
