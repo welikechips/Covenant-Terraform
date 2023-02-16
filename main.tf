@@ -8,7 +8,7 @@ resource "tls_private_key" "c2_key" {
 }
 
 resource "aws_key_pair" "generated_key" {
-    key_name   = "covenant-c2-private-key"
+    key_name   = "${var.env}-covenant-c2-private-key"
     public_key = tls_private_key.c2_key.public_key_openssh
 }
 
