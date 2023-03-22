@@ -23,7 +23,7 @@ resource "aws_default_route_table" "route_table" {
         gateway_id = aws_internet_gateway.gw.id
     }
     tags = {
-        Name = "default route table"
+        Name = "${var.env}-default route table"
         env  = var.env
     }
 }
