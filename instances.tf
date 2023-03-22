@@ -19,7 +19,7 @@ resource "aws_instance" "covenant_c2" {
     ]
 
     tags = {
-        Name = "Covenant C2"
+        Name = "${var.env}-Covenant C2"
     }
 
     connection {
@@ -54,7 +54,7 @@ resource "aws_instance" "phishing_mailing_server" {
     ]
 
     tags = {
-        Name = "Phishing Mailing Server"
+        Name = "${var.env}-Phishing Mailing Server"
     }
 
     connection {
@@ -89,7 +89,7 @@ resource "aws_instance" "redirector_http_1" {
     ]
 
     tags = {
-        Name = "HTTP Redirector #1"
+        Name = "${var.env}-HTTP Redirector #1"
     }
 
     connection {
