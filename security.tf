@@ -16,7 +16,7 @@ resource "aws_security_group" "port_22_all" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     tags = {
-        Name = "Port 22 all"
+        Name = "${var.env}-Port 22 all"
     }
 }
 
@@ -60,7 +60,7 @@ resource "aws_security_group" "http_redirector" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     tags = {
-        Name = "443 80 open only to allow access"
+        Name = "${var.env}-443 80 open only to allow access"
     }
 }
 
@@ -81,7 +81,7 @@ resource "aws_security_group" "port_7443" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     tags = {
-        Name = "Covenant Port 7443"
+        Name = "${var.env}-Covenant Port 7443"
     }
 }
 
@@ -144,6 +144,6 @@ resource "aws_security_group" "email_server" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     tags = {
-        Name = "Email Server"
+        Name = "${var.env}-Email Server"
     }
 }
